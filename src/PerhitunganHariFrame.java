@@ -32,8 +32,14 @@ public class PerhitunganHariFrame extends javax.swing.JFrame {
         for (String b : bulan) {
             cbBulan.addItem(b);
         }
-
-        spnTahun.setValue(java.time.Year.now().getValue());
+    int tahunSekarang = java.time.Year.now().getValue();
+    spnTahun.setModel(new javax.swing.SpinnerNumberModel(
+        tahunSekarang,
+        1,              
+        9999,           
+        1               
+    ));
+    spnTahun.setValue(tahunSekarang);
         }
 
     /**

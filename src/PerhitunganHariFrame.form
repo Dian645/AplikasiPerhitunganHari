@@ -41,7 +41,7 @@
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="1" attributes="0">
-                  <EmptySpace max="32767" attributes="0"/>
+                  <EmptySpace pref="181" max="32767" attributes="0"/>
                   <Component id="lblJudul" min="-2" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="180" max="-2" attributes="0"/>
               </Group>
@@ -82,10 +82,10 @@
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace min="-2" pref="39" max="-2" attributes="0"/>
-                          <Component id="lblInfo" min="-2" pref="290" max="-2" attributes="0"/>
+                          <Component id="lblInfo" min="-2" pref="365" max="-2" attributes="0"/>
                       </Group>
                   </Group>
-                  <EmptySpace pref="166" max="32767" attributes="0"/>
+                  <EmptySpace max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -108,9 +108,9 @@
                   <Component id="btnHitung" min="-2" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="39" max="-2" attributes="0"/>
                   <Component id="lblHasil" min="-2" pref="17" max="-2" attributes="0"/>
-                  <EmptySpace max="-2" attributes="0"/>
-                  <Component id="lblInfo" min="-2" pref="17" max="-2" attributes="0"/>
                   <EmptySpace max="32767" attributes="0"/>
+                  <Component id="lblInfo" min="-2" pref="17" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
                   <Component id="lblTanggal" min="-2" max="-2" attributes="0"/>
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Component id="calTanggal" min="-2" max="-2" attributes="0"/>
@@ -148,11 +148,17 @@
           </AuxValues>
         </Component>
         <Component class="javax.swing.JSpinner" name="spnTahun">
+          <Events>
+            <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="spnTahunStateChanged"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="btnHitung">
           <Properties>
             <Property name="text" type="java.lang.String" value="Hitung Hari"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnHitungActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="lblHasil">
         </Component>
@@ -169,6 +175,9 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Hitung Selisih Hari"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnSelisihActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>

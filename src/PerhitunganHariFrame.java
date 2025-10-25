@@ -7,6 +7,12 @@
  *
  * @author LENOVO
  */
+import java.time.LocalDate;
+import java.time.YearMonth;
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
+import javax.swing.JOptionPane;
+
 public class PerhitunganHariFrame extends javax.swing.JFrame {
 
     /**
@@ -62,18 +68,34 @@ public class PerhitunganHariFrame extends javax.swing.JFrame {
 
         lblTahun.setText("Tahun :");
 
+        spnTahun.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                spnTahunStateChanged(evt);
+            }
+        });
+
         btnHitung.setText("Hitung Hari");
+        btnHitung.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnHitungActionPerformed(evt);
+            }
+        });
 
         lblTanggal.setText("Pilih Tanggal");
 
         btnSelisih.setText("Hitung Selisih Hari");
+        btnSelisih.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSelisihActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(181, Short.MAX_VALUE)
                 .addComponent(lblJudul)
                 .addGap(180, 180, 180))
             .addGroup(jPanel2Layout.createSequentialGroup()
@@ -104,8 +126,8 @@ public class PerhitunganHariFrame extends javax.swing.JFrame {
                         .addComponent(lblTanggal))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(39, 39, 39)
-                        .addComponent(lblInfo, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(166, Short.MAX_VALUE))
+                        .addComponent(lblInfo, javax.swing.GroupLayout.PREFERRED_SIZE, 365, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -124,9 +146,9 @@ public class PerhitunganHariFrame extends javax.swing.JFrame {
                 .addComponent(btnHitung)
                 .addGap(39, 39, 39)
                 .addComponent(lblHasil, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(lblInfo, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(lblInfo, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lblTanggal)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(calTanggal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -139,6 +161,61 @@ public class PerhitunganHariFrame extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnHitungActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHitungActionPerformed
+        try {
+            int bulan = cbBulan.getSelectedIndex() + 1; // Januari = 0 → 1
+            int tahun = (Integer) spnTahun.getValue();
+
+            YearMonth ym = YearMonth.of(tahun, bulan);
+            int jumlahHari = ym.lengthOfMonth();
+
+            LocalDate hariPertama = ym.atDay(1);
+            LocalDate hariTerakhir = ym.atEndOfMonth();
+
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEEE, dd MMMM yyyy", new Locale("id", "ID"));
+
+            lblHasil.setText("Jumlah hari: " + jumlahHari);
+            lblInfo.setText("Dari " + formatter.format(hariPertama) + " hingga " + formatter.format(hariTerakhir));
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Masukkan data dengan benar!", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_btnHitungActionPerformed
+
+    private void spnTahunStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_spnTahunStateChanged
+        lblHasil.setText("");
+        lblInfo.setText("");
+    }//GEN-LAST:event_spnTahunStateChanged
+
+    private void btnSelisihActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSelisihActionPerformed
+        try {
+            java.util.Date date = calTanggal.getDate();
+            if (date == null) {
+                JOptionPane.showMessageDialog(this, "Pilih tanggal terlebih dahulu!", "Peringatan", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+
+            LocalDate tanggalDipilih = date.toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalDate();
+            LocalDate sekarang = LocalDate.now();
+
+            long selisih = java.time.temporal.ChronoUnit.DAYS.between(tanggalDipilih, sekarang);
+            String pesan;
+
+            if (selisih == 0) {
+                pesan = "Tanggal yang dipilih adalah hari ini!";
+            } else if (selisih > 0) {
+                pesan = "Tanggal yang dipilih sudah lewat " + selisih + " hari.";
+            } else {
+                pesan = "Tanggal yang dipilih akan datang dalam " + Math.abs(selisih) + " hari.";
+            }
+
+            JOptionPane.showMessageDialog(this, pesan, "Hasil Selisih Hari", JOptionPane.INFORMATION_MESSAGE);
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Terjadi kesalahan: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_btnSelisihActionPerformed
 
     /**
      * @param args the command line arguments
